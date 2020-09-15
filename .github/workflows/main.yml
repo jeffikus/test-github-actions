@@ -1,0 +1,23 @@
+name: Run code quality checks
+
+on:
+    pull_request:
+        branches: [master, develop]
+
+jobs:
+  phpcs_check:
+    name: Run PHPCS checks
+    runs-on: ubuntu-latest
+    steps:
+        # Checkout repository
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        # Run phpcs checks
+        - name: Run PHPCS inspection
+          uses: dingo-d/wpthemereview-gh-action@0.0.2
+          with:
+            wp_version: 5.5.1
+            php_version: 7.4
+            prefix: "theme-prefix"
+            ignore: "vendor,tests,.github"

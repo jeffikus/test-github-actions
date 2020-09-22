@@ -1,61 +1,50 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Theme Coding Standards">
-	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
-	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
-	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki -->
-	<!-- See https://github.com/wimg/PHPCompatibility -->
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 
-	<exclude-pattern>node_modules</exclude-pattern>
-	<exclude-pattern>vendor</exclude-pattern>
-	<exclude-pattern>bin</exclude-pattern>
-	<exclude-pattern>tests/</exclude-pattern>
+	<description>The Coding standard for the WordPress Coding Standards itself.</description>
 
-	<!-- Set a description for this ruleset. -->
-	<description>A custom set of code standard rules to check for WordPress themes.</description>
-
-	<!-- Pass some flags to PHPCS:
-		 p flag: Show progress of the run.
-		 s flag: Show sniff codes in all reports.
-		 v flag: Print verbose output.
-		 n flag: Do not print warnings.
-	-->
-	<arg value="psv"/>
-
-	<!-- Only check the PHP, CSS and SCSS files. JS files are checked separately with JSCS and JSHint. -->
-	<arg name="extensions" value="php"/>
-
-	<!-- Check all files in this directory and the directories below it. -->
 	<file>.</file>
 
-	<!-- Include the WordPress ruleset. -->
-	<rule ref="WordPress" />
+	<arg value="sp"/>
+	<arg name="extensions" value="php"/>
+	<arg name="basepath" value="."/>
+	<arg name="parallel" value="8"/>
 
-	<!-- Verify that the text_domain is set to the desired text-domain.
-		 Multiple valid text domains can be provided as a comma-delimited list. -->
-	<rule ref="WordPress.WP.I18n">
+	<exclude-pattern>/bin/class-ruleset-test.php</exclude-pattern>
+	<!-- Exclude Composer vendor directory. -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName"/>
+		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
+		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+	</rule>
+
+	<!-- Enforce PSR1 compatible namespaces. -->
+	<rule ref="PSR1.Classes.ClassDeclaration"/>
+
+	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
 		<properties>
-			<property name="text_domain" type="array" value="twentytwentyone" />
+			<property name="alignMultilineItems" value="!=100"/>
+			<property name="exact" value="false" phpcs-only="true"/>
 		</properties>
 	</rule>
 
-	<!-- Allow for theme specific exceptions to the file name rules based
-		 on the theme hierarchy. -->
-	<rule ref="WordPress.Files.FileName">
-		<properties>
-			<property name="is_theme" value="true" />
-		</properties>
+	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
+
+	<!-- Check code for cross-version PHP compatibility. -->
+	<config name="testVersion" value="5.4-"/>
+	<rule ref="PHPCompatibility">
+		<!-- Exclude PHP constants back-filled by PHPCS. -->
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_finallyFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_yieldFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_ellipsisFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_powFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_pow_equalFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_spaceshipFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_coalesceFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_coalesce_equalFound"/>
+		<exclude name="PHPCompatibility.Constants.NewConstants.t_yield_fromFound"/>
 	</rule>
 
-	<!-- Verify that no WP functions are used which are deprecated or have been removed.
-		 The minimum version set here should be in line with the minimum WP version
-		 as set in the "Requires at least" tag in the readme.txt file. -->
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="5.3" />
-		</properties>
-	</rule>
-
-	<!-- Include sniffs for PHP cross-version compatibility. -->
-	<config name="testVersion" value="5.6"/>
-	<rule ref="PHPCompatibility"/>
 </ruleset>

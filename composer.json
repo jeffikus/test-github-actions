@@ -3,7 +3,7 @@
     "composer/installers": "~1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
     "wp-coding-standards/wpcs": "^2.3",
-    "wptrt/wpthemereview": "*",
+    "wptrt/wpthemereview": "^0.2",
     "szepeviktor/phpstan-wordpress": "^0.6.0"
   }
 }

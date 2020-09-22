@@ -1,6 +1,11 @@
 <?php
 /**
- * The template for displaying archive pages
+ * The main template file
+ *
+ * This is the most generic template file in a WordPress theme
+ * and one of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query.
+ * E.g., it puts together the home page when no home.php file exists.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *
@@ -9,17 +14,24 @@
  * @since 1.0.0
  */
 
-/**
- * Implements thisissomebadbadcode.
- */
-function thisissomebadbadcode() {
-    if ( $something = 0) {
-        echo 'hello';
-        $jeff
-    }
+get_header();
+
+if ( have_posts() ) {
+
+	// Load posts loop.
+	while ( have_posts() ) {
+		the_post();
+		get_template_part( 'template-parts/content/content' );
+	}
+
+	// Previous/next page navigation.
+	twenty_twenty_one_the_posts_navigation();
+
+} else {
+
+	// If no content, include the "No posts found" template.
+	get_template_part( 'template-parts/content/content-none' );
+
 }
-    
-if this then taht;
-eecho 'test'
-testalicious...
-?>
+
+get_footer();

@@ -1,9 +1,12 @@
 {
+  "name": "maykonn/github-actions-php-phpcs",
+  "description": "Github Actions for PHP with PHP Code Sniffer",
   "require-dev": {
     "composer/installers": "~1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
     "wp-coding-standards/wpcs": "^2.3",
     "wptrt/wpthemereview": "^0.2",
     "szepeviktor/phpstan-wordpress": "^0.6.0"
-  }
+  },
+  "license": "MIT"
 }

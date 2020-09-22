@@ -1,50 +1,49 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WordPress Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TwentyTwenty Coding Standards" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 
-	<description>The Coding standard for the WordPress Coding Standards itself.</description>
+  <!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+  <!-- See https://github.com/WordPress/WordPress-Coding-Standards/blob/develop/.phpcs.xml.dist -->
 
-	<file>.</file>
+  <!-- Set a description for this ruleset. -->
+  <description>Coding standards used for checking the TwentyTwenty theme.</description>
 
-	<arg value="sp"/>
-	<arg name="extensions" value="php"/>
-	<arg name="basepath" value="."/>
-	<arg name="parallel" value="8"/>
+  <!-- Check the entire theme. -->
+  <file>.</file>
 
-	<exclude-pattern>/bin/class-ruleset-test.php</exclude-pattern>
-	<!-- Exclude Composer vendor directory. -->
-	<exclude-pattern>*/vendor/*</exclude-pattern>
+  <!-- Exclude patterns. -->
+  <exclude-pattern>/vendor/*</exclude-pattern>
+  <exclude-pattern>/node_modules/*</exclude-pattern>
 
-	<rule ref="WordPress">
-		<exclude name="WordPress.Files.FileName"/>
-		<exclude name="WordPress.NamingConventions.ValidVariableName"/>
-		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition"/>
+  <!-- Additional arguments. -->
+  <arg value="sp"/>
+  <arg name="basepath" value="."/>
+  <arg name="parallel" value="8"/>
+  <arg name="cache"/>
+  <arg name="extensions" value="php"/>
+
+  <!-- Include the WordPress rulesets. -->
+  <rule ref="WordPress-Extra"/>
+  <rule ref="WordPress-Docs"/>
+  <rule ref="WPThemeReview"/>
+
+  <!-- We want to allow exceptions for the filename naming, since we are working with a theme. -->
+  <!-- See https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#themes-allow-filename-exceptions -->
+  <rule ref="WordPress.Files.FileName">
+    <properties>
+      <property name="is_theme" value="true"/>
+    </properties>
+  </rule>
+
+	<!-- Allow multiple parameters on one line for multi-line function calls. -->
+	<rule ref="PEAR.Functions.FunctionCallSignature">
+    <properties>
+       <property name="allowMultipleArguments" value="true" />
+    </properties>
 	</rule>
 
-	<!-- Enforce PSR1 compatible namespaces. -->
-	<rule ref="PSR1.Classes.ClassDeclaration"/>
-
-	<rule ref="WordPress.Arrays.MultipleStatementAlignment">
-		<properties>
-			<property name="alignMultilineItems" value="!=100"/>
-			<property name="exact" value="false" phpcs-only="true"/>
-		</properties>
+	<!-- Improve code readablilty by allowing the artguments after function call. -->
+  <rule ref="PEAR.Functions.FunctionCallSignature">
+  	<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+  	<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
 	</rule>
-
-	<rule ref="PSR2.Methods.FunctionClosingBrace"/>
-
-	<!-- Check code for cross-version PHP compatibility. -->
-	<config name="testVersion" value="5.4-"/>
-	<rule ref="PHPCompatibility">
-		<!-- Exclude PHP constants back-filled by PHPCS. -->
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_finallyFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_yieldFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_ellipsisFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_powFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_pow_equalFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_spaceshipFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_coalesceFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_coalesce_equalFound"/>
-		<exclude name="PHPCompatibility.Constants.NewConstants.t_yield_fromFound"/>
-	</rule>
-
 </ruleset>

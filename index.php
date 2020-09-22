@@ -7,4 +7,5 @@ function thisissomebadbadcode() {
     }
     if this then taht;
     eecho 'test'
+    testalicious...
     ?>

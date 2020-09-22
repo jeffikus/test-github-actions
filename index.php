@@ -5,6 +5,6 @@ function thisissomebadbadcode() {
     $jeff
     }
     }
-    
+    if this then taht;
     eecho 'test'
     ?>

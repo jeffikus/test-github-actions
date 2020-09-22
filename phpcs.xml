@@ -1,104 +1,61 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards">
-	<description>WooCommerce dev PHP_CodeSniffer ruleset.</description>
+<ruleset name="WordPress Theme Coding Standards">
+	<!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards -->
+	<!-- See https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki -->
+	<!-- See https://github.com/wimg/PHPCompatibility -->
 
+	<exclude-pattern>node_modules</exclude-pattern>
+	<exclude-pattern>vendor</exclude-pattern>
+	<exclude-pattern>bin</exclude-pattern>
+	<exclude-pattern>tests/</exclude-pattern>
+
+	<!-- Set a description for this ruleset. -->
+	<description>A custom set of code standard rules to check for WordPress themes.</description>
+
+	<!-- Pass some flags to PHPCS:
+		 p flag: Show progress of the run.
+		 s flag: Show sniff codes in all reports.
+		 v flag: Print verbose output.
+		 n flag: Do not print warnings.
+	-->
+	<arg value="psv"/>
+
+	<!-- Only check the PHP, CSS and SCSS files. JS files are checked separately with JSCS and JSHint. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Check all files in this directory and the directories below it. -->
 	<file>.</file>
 
-	<!-- Exclude paths -->
-	<exclude-pattern>tests/cli/</exclude-pattern>
-	<exclude-pattern>includes/libraries/</exclude-pattern>
-	<exclude-pattern>includes/legacy/</exclude-pattern>
-	<exclude-pattern>includes/api/legacy/</exclude-pattern>
-	<exclude-pattern>includes/api/v1/</exclude-pattern>
-	<exclude-pattern>includes/class-wc-geo-ip.php</exclude-pattern>
-	<exclude-pattern>includes/wc-deprecated-functions.php</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<!-- Include the WordPress ruleset. -->
+	<rule ref="WordPress" />
 
-	<!-- Show progress, show the error codes for each message (source). -->
-	<arg value="ps" />
-
-	<!-- Strip the filepaths in reports down to the relevant bit. -->
-	<arg name="basepath" value="./" />
-
-	<!-- Check up to 8 files simultaneously. -->
-	<arg name="parallel" value="8" />
-
-	<!-- Configs -->
-	<config name="minimum_supported_wp_version" value="5.2" />
-	<config name="testVersion" value="7.0-" />
-
-	<!-- Rules -->
-	<rule ref="WooCommerce-Core" />
-
-	<rule ref="WooCommerce.Functions.InternalInjectionMethod">
-		<include-pattern>src/</include-pattern>
-		<include-pattern>tests/php/src/</include-pattern>
-		<properties>
-			<property name="injectionMethod" value="init"/>
-		</properties>
-	</rule>
-
+	<!-- Verify that the text_domain is set to the desired text-domain.
+		 Multiple valid text domains can be provided as a comma-delimited list. -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="woocommerce" />
+			<property name="text_domain" type="array" value="twentytwentyone" />
 		</properties>
 	</rule>
 
-	<rule ref="PHPCompatibility">
-		<exclude-pattern>tests/</exclude-pattern>
+	<!-- Allow for theme specific exceptions to the file name rules based
+		 on the theme hierarchy. -->
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="is_theme" value="true" />
+		</properties>
 	</rule>
 
-	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
-		<exclude-pattern>tests/</exclude-pattern>
-		<exclude-pattern>src/</exclude-pattern>
-		<exclude-pattern>tests/php/src/</exclude-pattern>
+	<!-- Verify that no WP functions are used which are deprecated or have been removed.
+		 The minimum version set here should be in line with the minimum WP version
+		 as set in the "Requires at least" tag in the readme.txt file. -->
+	<rule ref="WordPress.WP.DeprecatedFunctions">
+		<properties>
+			<property name="minimum_supported_version" value="5.3" />
+		</properties>
 	</rule>
 
-	<rule ref="Squiz.Classes.ClassFileName">
-		<include-pattern>src/</include-pattern>
-		<include-pattern>tests/php/src/</include-pattern>
-	</rule>
-
-	<rule ref="Squiz.Classes.ValidClassName">
-		<include-pattern>src/</include-pattern>
-		<include-pattern>tests/php/src/</include-pattern>
-	</rule>
-
-	<rule ref="Generic.Commenting">
-		<exclude-pattern>tests/</exclude-pattern>
-	</rule>
-
-	<rule ref="PEAR.Functions.FunctionCallSignature.EmptyLine">
-		<exclude-pattern>tests/e2e-tests/</exclude-pattern>
-	</rule>
-
-	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
-		<exclude-pattern>i18n/</exclude-pattern>
-		<exclude-pattern>src/</exclude-pattern>
-		<exclude-pattern>tests/php</exclude-pattern>
-		<exclude-pattern>tests/Tools/</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Commenting.FileComment.MissingPackageTag">
-		<exclude-pattern>src/</exclude-pattern>
-		<exclude-pattern>tests/php/</exclude-pattern>
-	</rule>
-	<rule ref="Squiz.Commenting.FileComment.Missing">
-		<exclude-pattern>src/</exclude-pattern>
-		<exclude-pattern>tests/php/</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Commenting.FunctionCommentThrowTag.Missing">
-		<exclude-pattern>tests/php/</exclude-pattern>
-	</rule>
-
-	<rule ref="Squiz.Commenting.FileComment.Missing">
-		<exclude-pattern>tests/php/</exclude-pattern>
-	</rule>
-
-	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
-		<exclude-pattern>src/</exclude-pattern>
-	</rule>
+	<!-- Include sniffs for PHP cross-version compatibility. -->
+	<config name="testVersion" value="5.6"/>
+	<rule ref="PHPCompatibility"/>
 </ruleset>

@@ -1,9 +1,12 @@
 <?php
 /**
- * @file
- * Description of what this module (or file) is doing.
- * @package 
- * Testing the package.
+ * The template for displaying archive pages
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twenty_One
+ * @since 1.0.0
  */
 
 /**
